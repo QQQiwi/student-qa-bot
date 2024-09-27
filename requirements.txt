@@ -1,0 +1,10 @@
+1: Создаем рабочее окружение - puthon -m venv .venv И переходим в него: 
+(если не видит python, то используйте python3)
+
+Windows: .venv\Scripts\activate
+UNIX-like системы: source .venv/bin/activate
+
+2: Устанавливаем Aiogram - pip install aiogram
+(если не видит pip, то используйте pip3)
+
+3: Langcahin - раздел будет позже, если будет надобность использовать этот фреймворк.
