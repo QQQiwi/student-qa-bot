@@ -1,0 +1,5 @@
+2024-12-04 12:54:10.259 | INFO     | __main__:main:150 - Starting bot
+2024-12-04 12:54:30.274 | INFO     | __main__:command_start_handler:37 - User 454131511 started the bot
+2024-12-04 12:54:43.265 | INFO     | __main__:message_handler:119 - Received question from user 454131511: Сосал?
+2024-12-04 12:54:43.459 | INFO     | __main__:send_request_to_api:98 - Получен вопрос: Сосал?
+2024-12-04 12:54:43.708 | INFO     | __main__:message_handler:137 - Sent answer to user 454131511
