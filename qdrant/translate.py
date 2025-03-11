@@ -1,5 +1,14 @@
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
+from qdrant_client.http.models import VectorParams, Distance
+import json
+
+# Путь к JSON-файлу
+file_path = 'dataset.json'
+
+# Загрузка JSON-файла
+with open(file_path, 'r', encoding='utf-8') as file:
+    data = json.load(file)
 
 # Инициализация модели для преобразования текста в векторы
 model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -49,16 +58,24 @@ vectors = model.encode(hierarchical_texts)
 # Инициализация клиента Qdrant
 client = QdrantClient(host='localhost', port=6333)
 
-# Создание коллекции в Qdrant
-client.recreate_collection(
-    collection_name='my_collection',
-    vector_size=vectors.shape[1]  # Размерность векторов
+# Проверка существования коллекции и её создание
+collection_name = 'my_collection'
+
+# Удаление коллекции, если она существует
+collections = client.get_collections().collections
+collection_exists = any(collection.name == collection_name for collection in collections)
+if collection_exists:
+    client.delete_collection(collection_name=collection_name)
+
+client.create_collection(
+    collection_name=collection_name,
+    vectors_config=VectorParams(size=vectors.shape[1], distance=Distance.COSINE)  # Конфигурация векторов
 )
 
 # Загрузка векторов в Qdrant
 for i, vector in enumerate(vectors):
     client.upsert(
-        collection_name='my_collection',
+        collection_name=collection_name,
         points=[
             {
                 'id': i,
