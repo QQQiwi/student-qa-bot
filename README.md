@@ -1,7 +1,9 @@
 # Чат-бот для абитуриентов и студентов на основе LLAMA
 
 <div align = "center">
-![Логотип проекта](https://i.pinimg.com/originals/35/35/00/3535009c4a5e1d6c611dc436183b2be3.gif)
+  
+<img src = "https://i.pinimg.com/originals/35/35/00/3535009c4a5e1d6c611dc436183b2be3.gif">
+
 </div>
 
 ## Описание
