@@ -4,7 +4,7 @@ from qdrant_client.http.models import VectorParams, Distance
 import json
 
 # Путь к JSON-файлу
-file_path = 'dataset.json'
+file_path = '.\data\Data.json'
 
 # Загрузка JSON-файла
 with open(file_path, 'r', encoding='utf-8') as file:
