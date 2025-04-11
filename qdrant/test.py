@@ -1,7 +1,9 @@
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoModel, AutoTokenizer, AutoModelForCausalLM, pipeline
 
+import os
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1"  # Для точного определения места ошибки
 # Инициализация клиента Qdrant
 client = QdrantClient(host='localhost', port=6333)
 
@@ -9,22 +11,39 @@ client = QdrantClient(host='localhost', port=6333)
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Создание векторного запроса
-querry = sentence_model.encode(input('Querry: '))
+query = sentence_model.encode(input('Querry: '))
 
 # Подключение llama 3.1 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
+# tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
+# model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B-Instruct")
 
 # Поиск 5ти ближайших к запросу векторов
 context = client.search(
     collection_name= "my_collection",
-    query_vector=querry,
+    query_vector=query,
     limit = 5
 )
 
-# Вывод найденных ближайших векторов
-for item in context:
-    print(item) 
+# Перезагрузка модели
+# model = AutoModel.from_pretrained(
+#     "ai-forever/rugpt3small_based_on_gpt2",
+#     force_download=True,  # Принудительно скачать заново
+#     resume_download=False # Не продолжать прерванную загрузку
+# )
 
-# prompt = f"Используя данный мною контекст, ответь на вопрос: \n {context}. Вопрос: {querry}"
-# print(model(prompt, max_tokens = 512, temperature = 0))
+# Вывод найденных ближайших векторов
+# for item in context:
+#     print(item) 
+
+# Генерация ответа
+model = pipeline("text-generation", model="ai-forever/rugpt3small_based_on_gpt2")
+prompt = f"""Используй только контекст ниже. Не придумывай ответ, если его нет в тексте.
+Контекст: {context}
+Вопрос: {query}
+Ответ:"""
+print(model(
+    prompt, 
+    max_new_tokens=512,  # Максимальное количество новых токенов для генерации
+    max_length=2048,     # Общий максимум (промпт + сгенерированный ответ)
+    temperature=0.1
+)[0]["generated_text"])

@@ -67,6 +67,7 @@ collection_exists = any(collection.name == collection_name for collection in col
 if collection_exists:
     client.delete_collection(collection_name=collection_name)
 
+# Создание коллекции
 client.create_collection(
     collection_name=collection_name,
     vectors_config=VectorParams(size=vectors.shape[1], distance=Distance.COSINE)  # Конфигурация векторов
