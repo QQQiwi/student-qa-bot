@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher
 
 from config import TOKEN
 from app.users.handlers import router
+from app.admin.handlers import router_adm
 
 from logger import logger
 
@@ -14,6 +15,7 @@ dp = Dispatcher()
 async def main():
     logger.info("Запуск основного процесса...")
     dp.include_router(router)
+    dp.include_router(router_adm)
     
     try:
         await dp.start_polling(bot)

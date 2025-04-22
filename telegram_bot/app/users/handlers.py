@@ -14,8 +14,16 @@ async def cmd_start(message: Message):
     await message.answer(f"Привет, {message.from_user.first_name}. Я - GuideBO. Готов помочь с любым вопросом! Что тебя интересует?",
                          reply_markup=kb.main_keyboard)
 
-@router.message(F.text)
-async def handle_message_to_llm(message: Message, bot: Bot):
+@router.message(F.text == '🕵️‍♂️ Обо мне')
+async def cmd_start(message: Message):
+    await message.answer("<b>🤖 Я — бот-помощник GuideBO</b>, созданный студентами факультета КНИиТ СГУ.<br><br>"
+                        "🎓 Моя цель — помогать студентам с учёбой и отвечать на самые важные вопросы.<br><br>"
+                        "🧠 Я использую <i>искусственный интеллект</i>, чтобы давать быстрые, точные и полезные ответы.<br><br>"
+                        "💬 Просто напиши свой вопрос в чат — и я постараюсь помочь!",
+                        parse_mode="HTML",reply_markup=kb.start_inline_keyboard)
+
+@router.message(F.text & ~F.text.startswith("/"))
+async def handle_message_to_llm(message: Message):
     try:
         # Отправляем уведомление о начале обработки
         processing_msg = await message.answer("⏳ Обрабатываю ваше сообщение...")
@@ -47,8 +55,3 @@ async def handle_message_to_llm(message: Message, bot: Bot):
         error_msg = f"⚠️ Произошла ошибка: {str(e)}"
         await message.answer(error_msg)
         logger.error(f"Error in handle_message_to_llm: {str(e)}")
-
-@router.message(F.text == '🕵️‍♂️ Обо мне')
-async def cmd_start(message: Message):
-    await message.answer(f"Я - бот-помощник, разработанный студентами факультета КНИиТ СГУ.",
-                         reply_markup=kb.start_inline_keyboard)
