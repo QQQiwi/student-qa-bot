@@ -4,8 +4,8 @@ import logging
 from aiogram import Bot, Dispatcher
 
 from config import TOKEN
-from app.users.handlers import router
-from app.admin.handlers import router_adm
+from telegram_bot.app.users.handlers import router
+from telegram_bot.app.admin.handlers import router_adm
 
 from logger import logger
 
