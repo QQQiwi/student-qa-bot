@@ -6,6 +6,6 @@ main_keyboard = ReplyKeyboardMarkup(keyboard=[
 ], 
     resize_keyboard = True)
 
-start_inline_keyboard = InlineKeyboardMarkup(keyboard = [
-    [InlineKeyboardButton(text = 'Сайт СГУ', url= "www.sgu.ru")]
+start_inline_keyboard = InlineKeyboardMarkup(inline_keyboard= [
+    [InlineKeyboardButton(text = 'Сайт СГУ', url= "https://www.sgu.ru")]
 ])

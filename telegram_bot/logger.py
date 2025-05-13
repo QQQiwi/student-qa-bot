@@ -1,8 +1,9 @@
 import logging
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
-def setup_logger(name: str = __name__):
-    """Настройка логгера с выводом в файл и консоль"""
+def setup_logger(name: str = __name__, max_bytes: int = 1073741824, backup_count: int = 2):
+    """Настройка логгера с ротацией файлов"""
     logs_dir = Path("logs")
     logs_dir.mkdir(exist_ok=True)
     
@@ -14,9 +15,11 @@ def setup_logger(name: str = __name__):
         datefmt='%H:%M:%S'
     )
     
-    # Файловый обработчик
-    file_handler = logging.FileHandler(
+    # Ротирующий файловый обработчик (1 ГБ макс, 3 бэкап-файла)
+    file_handler = RotatingFileHandler(
         filename=logs_dir / 'bot.log',
+        maxBytes=max_bytes,          # 1 GB = 1073741824 bytes
+        backupCount=backup_count,     # Сколько бэкап-файлов хранить
         encoding='utf-8'
     )
     file_handler.setFormatter(formatter)
@@ -34,5 +37,5 @@ def setup_logger(name: str = __name__):
     
     return logger
 
-# Инициализация глобального логгера
-logger = setup_logger()
+# Инициализация глобального логгера (1 ГБ на файл, максимум 3 файла)
+logger = setup_logger(max_bytes=1073741824, backup_count=3)

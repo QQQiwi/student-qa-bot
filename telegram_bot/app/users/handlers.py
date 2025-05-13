@@ -4,8 +4,8 @@ from aiogram.types import Message
 
 import app.users.keyboard as kb
 
-from telegram_bot.utils.llm_api import ask_llm
-from telegram_bot.logger import logger
+from utils.llm_api import ask_llm
+from logger import logger
 
 router = Router()
 

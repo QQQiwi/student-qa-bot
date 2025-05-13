@@ -4,8 +4,8 @@ import logging
 from aiogram import Bot, Dispatcher
 
 from config import TOKEN
-from telegram_bot.app.users.handlers import router
-from telegram_bot.app.admin.handlers import router_adm
+from app.users.handlers import router
+from app.admin.handlers import router_adm
 
 from logger import logger
 
@@ -16,7 +16,8 @@ async def main():
     logger.info("Запуск основного процесса...")
     dp.include_router(router)
     dp.include_router(router_adm)
-    
+    logger.info("Бот запущен и готов к использованию.")
+
     try:
         await dp.start_polling(bot)
     except Exception as e:

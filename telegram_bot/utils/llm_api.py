@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 
 
-from telegram_bot.config import LLM_SERVER_URL
+from config import LLM_SERVER_URL
 
 app = FastAPI()
 
