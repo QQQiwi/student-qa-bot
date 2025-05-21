@@ -15,14 +15,15 @@ def display_results(results):
     """Отображает найденные результаты с их релевантностью"""
     total_score = sum(r.score for r in results)
     
-    print("\nНайденные фрагменты:")
+    print("\nНайденные векторы:")
     print("=" * 80)
     for i, result in enumerate(results, 1):
         relative_score = (result.score / total_score) * 100
-        print(f"\nФрагмент {i} (релевантность: {relative_score:.1f}%):")
+        print(f"\Вектор {i} (релевантность: {relative_score:.1f}%):")
         print("-" * 40)
         print(result.payload['text'])
     print("=" * 80)
+    print(client.get_collection("my_collection").config.params)
 
 def format_context(results):
     """Форматирует контекст для модели"""
@@ -93,17 +94,17 @@ try:
     print_progress("SYSTEM", "Отправка запроса в Ollama...")
 
     prompt = f"""Задача: обобщи информацию из предоставленных фрагментов текста.
-Используй ТОЛЬКО факты из этих фрагментов.
+    Используй ТОЛЬКО факты из этих фрагментов.
 
-Контекст:
-{context}
+    Контекст:
+    {context}
 
-Вопрос:
-{query_text}"""
+    Вопрос:
+    {query_text}"""
 
     try:
         ollama_response = ollama.chat(
-            model="llama3",  # убедись, что имя совпадает с моделью, запущенной через Ollama
+            model="llama3",
             messages=[
                 {"role": "user", "content": prompt}
             ]

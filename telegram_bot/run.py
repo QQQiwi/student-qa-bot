@@ -17,6 +17,7 @@ async def main():
     dp.include_router(router)
     dp.include_router(router_adm)
     logger.info("Бот запущен и готов к использованию.")
+    
 
     try:
         await dp.start_polling(bot)
